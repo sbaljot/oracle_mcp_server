@@ -1,0 +1,8 @@
+{
+"NATL_WORKDAY_ACC_GL_FILE_LOAD_PROC":"procedure code",
+"NATL_WORKDAY_PAY_GL_DATA_PKG":"package code",
+"NATL_WORKDAY_PAY_GL_FILE_LOAD_PROC":"procedure code",
+"NCR_COMMON_UTILITY_PKG":"package code",
+"NCR_CSV_PKG":"package code",
+"NCR_COMMON_MAPPING_UTILITY":"package code"
+}

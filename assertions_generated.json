@@ -1,0 +1,76 @@
+{
+  "NATL_WORKDAY_ACC_GL_FILE_LOAD_PROC": [
+    {
+      "assertion": "When the procedure starts processing a file, it inserts a record into the file status table with status 'I' (indicating the file is being inserted).",
+      "source_lines": "Insert into NCRNICSERPCSPPRC.NATL_WORKDAY_CLOUD_GL_FILE_STATUS\n\t\t\t(file_name\n\t\t\t,status\n\t\t\t,creation_date)\n\tvalues (p_file_name\n\t\t\t\t,'I'\n\t\t\t\t,sysdate);",
+      "confidence": "high",
+      "category": "happy_path",
+      "trace": {},
+      "path_id": "NATL_WORKDAY_ACC_GL_FILE_LOAD_PROC:path_1"
+    },
+    {
+      "assertion": "The procedure attempts to load data from an external source into the main GL table, setting the status of each inserted record to 'I'.",
+      "source_lines": "execute immediate Q'[ Insert into NCRNICSERPCSPPRC.NATL_WORKDAY_CLOUD_GL_MAIN\n...\n\t\t\t\t'S',\n\t\t\t\tSYSDATE,\n\t\t\t\t:2,\n\t\t\t\t:3\n\t\t\t\tFROM NCRNICSERPCSPPRC.NATL_WORKDAY_ACC_CLOUD_GL_EXTERNL\n\t\t\t\tEXTERNAL MODIFY (LOCATION (:1))\n\t\t\t\tWHERE 1=1\n\t\t\t]' using v_file_name,\n        v_country_code,\n        v_file_name_csv;",
+      "confidence": "high",
+      "category": "happy_path",
+      "trace": {},
+      "path_id": "NATL_WORKDAY_ACC_GL_FILE_LOAD_PROC:path_1"
+    },
+    {
+      "assertion": "If an error occurs during the data load into the main table, the error is caught and logged via dbms_output, but the procedure continues.",
+      "source_lines": "exception\nwhen others then\n\tdbms_output.put_line('Error in loading data in main table: ' || SQLERRM);",
+      "confidence": "high",
+      "category": "error_handling",
+      "trace": {
+        "data_load_error": "raised"
+      },
+      "path_id": "NATL_WORKDAY_ACC_GL_FILE_LOAD_PROC:path_1"
+    },
+    {
+      "assertion": "After loading, the procedure counts how many records in the main table have status 'I', were created today, and match the processed file name reference.",
+      "source_lines": "SELECT COUNT(*)\nINTO V_COUNT\nFROM NCRNICSERPCSPPRC.NATL_WORKDAY_CLOUD_GL_MAIN\nWHERE STATUS='I'\n and trunc(creation_date)=trunc(SYSDATE)\n  and FILE_NAME_REF=v_file_name;",
+      "confidence": "high",
+      "category": "data_validation",
+      "trace": {},
+      "path_id": "NATL_WORKDAY_ACC_GL_FILE_LOAD_PROC:path_1"
+    },
+    {
+      "assertion": "If the count of inserted records is not zero, the procedure archives the original file by copying it to an archive directory with a timestamped name, then calls a downstream procedure to process the file further.",
+      "source_lines": "IF V_COUNT != 0 THEN\n    BEGIN\n    n_file_name:= TO_CHAR(SYSDATE, 'YYYYMMDD_HH24:MI:SS')||'_'||p_file_name;\n    utl_file.fcopy (\n       l_file_dir,\n        p_file_name,\n       l_dir_arc,\n       n_file_name);\n    NATL_WORKDAY_PAY_GL_DATA_PKG.NATL_WORKDAY_PAY_GL_DATA_PRC(v_file_name);\n    END;",
+      "confidence": "high",
+      "category": "happy_path",
+      "trace": {
+        "inserted_record_count": "nonzero"
+      },
+      "path_id": "NATL_WORKDAY_ACC_GL_FILE_LOAD_PROC:path_1"
+    },
+    {
+      "assertion": "If no records were loaded into the main table (count is zero), the procedure updates the file status to 'E' (error) and commits this change.",
+      "source_lines": "ELSE\n    dbms_output.put_line('No data loaded in Main table');\n    UPDATE NCRNICSERPCSPPRC.NATL_WORKDAY_CLOUD_GL_FILE_STATUS\n\tSET STATUS = 'E'\n\twhere file_name = p_file_name;\n\tcommit;",
+      "confidence": "high",
+      "category": "error_handling",
+      "trace": {
+        "inserted_record_count": "zero"
+      },
+      "path_id": "NATL_WORKDAY_ACC_GL_FILE_LOAD_PROC:path_2"
+    },
+    {
+      "assertion": "After processing (regardless of whether data was loaded), the procedure updates the file status to 'P' (presumably 'Processed') and commits this change.",
+      "source_lines": "UPDATE NCRNICSERPCSPPRC.NATL_WORKDAY_CLOUD_GL_FILE_STATUS\nSET STATUS = 'P'\nwhere file_name = p_file_name;\ncommit;",
+      "confidence": "high",
+      "category": "happy_path",
+      "trace": {},
+      "path_id": "NATL_WORKDAY_ACC_GL_FILE_LOAD_PROC:path_1"
+    },
+    {
+      "assertion": "If any unhandled error occurs during the overall procedure execution, the error is logged, and an email notification is sent indicating a validation failure with details about the stage where the error occurred.",
+      "source_lines": "exception\nwhen others then\n\tdbms_output.put_line('Error : '||SQLERRM);\n\tdbms_output.put_line('Send Email Start');\n\tncr_common_utility_pkg.send_mail(pi_process=> 'NCR_GL_JOURNALS_INTERFACE',\n                                     pi_event  => 'VALIDATION_FAIL',\n                                     pi_subject=> 'Issue in Workday Payroll GL File',\n                                     pi_message=> 'Error at :'||v_Stage, ... );",
+      "confidence": "high",
+      "category": "error_handling",
+      "trace": {
+        "unhandled_error": "raised"
+      },
+      "path_id": "NATL_WORKDAY_ACC_GL_FILE_LOAD_PROC:path_1"
+    }
+  ]
+}

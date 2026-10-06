@@ -1,0 +1,155 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "owner": "NCRNICSERPCSPPRC",
+      "name": "NATL_WORKDAY_ACC_GL_FILE_LOAD_PROC",
+      "types": [
+        "PROCEDURE"
+      ],
+      "id": "NCRNICSERPCSPPRC.NATL_WORKDAY_ACC_GL_FILE_LOAD_PROC"
+    },
+    {
+      "owner": "NCRNICSERPCSPPRC",
+      "name": "NATL_WORKDAY_PAY_GL_DATA_PKG",
+      "types": [
+        "PACKAGE",
+        "PACKAGE BODY"
+      ],
+      "id": "NCRNICSERPCSPPRC.NATL_WORKDAY_PAY_GL_DATA_PKG"
+    },
+    {
+      "owner": "NCRNICSERPCSPPRC",
+      "name": "NATL_WORKDAY_CLOUD_GL_FILE_STATUS",
+      "types": [
+        "TABLE"
+      ],
+      "id": "NCRNICSERPCSPPRC.NATL_WORKDAY_CLOUD_GL_FILE_STATUS"
+    },
+    {
+      "owner": "NCRNICSERPCSPPRC",
+      "name": "NCR_COMMON_UTILITY_PKG",
+      "types": [
+        "PACKAGE"
+      ],
+      "id": "NCRNICSERPCSPPRC.NCR_COMMON_UTILITY_PKG"
+    },
+    {
+      "owner": "NCRNICSERPCSPPRC",
+      "name": "NATL_WORKDAY_CLOUD_GL_MAIN",
+      "types": [
+        "TABLE"
+      ],
+      "id": "NCRNICSERPCSPPRC.NATL_WORKDAY_CLOUD_GL_MAIN"
+    },
+    {
+      "owner": "NCRNICSERPCSPPRC",
+      "name": "NATL_WORKDAY_GL_GROUPID_S",
+      "types": [
+        "SEQUENCE"
+      ],
+      "id": "NCRNICSERPCSPPRC.NATL_WORKDAY_GL_GROUPID_S"
+    },
+    {
+      "owner": "CMU",
+      "name": "NCR_COMMON_MAPPING_UTILITY",
+      "types": [
+        "PACKAGE"
+      ],
+      "id": "CMU.NCR_COMMON_MAPPING_UTILITY"
+    },
+    {
+      "owner": "NCRNICSERPCSPPRC",
+      "name": "NCR_CSV_PKG",
+      "types": [
+        "PACKAGE"
+      ],
+      "id": "NCRNICSERPCSPPRC.NCR_CSV_PKG"
+    },
+    {
+      "owner": "NCRNICSERPCSPPRC",
+      "name": "NATL_WORKDAY_CLOUD_GL_DATA_ARCHIVE",
+      "types": [
+        "TABLE"
+      ],
+      "id": "NCRNICSERPCSPPRC.NATL_WORKDAY_CLOUD_GL_DATA_ARCHIVE"
+    },
+    {
+      "owner": "NCRNICSERPCSPPRC",
+      "name": "NATL_WORKDAY_PAY_GL_FILE_LOAD_PROC",
+      "types": [
+        "PROCEDURE"
+      ],
+      "id": "NCRNICSERPCSPPRC.NATL_WORKDAY_PAY_GL_FILE_LOAD_PROC"
+    }
+  ],
+  "links": [
+    {
+      "source": "NCRNICSERPCSPPRC.NATL_WORKDAY_ACC_GL_FILE_LOAD_PROC",
+      "target": "NCRNICSERPCSPPRC.NATL_WORKDAY_PAY_GL_DATA_PKG"
+    },
+    {
+      "source": "NCRNICSERPCSPPRC.NATL_WORKDAY_ACC_GL_FILE_LOAD_PROC",
+      "target": "NCRNICSERPCSPPRC.NATL_WORKDAY_CLOUD_GL_FILE_STATUS"
+    },
+    {
+      "source": "NCRNICSERPCSPPRC.NATL_WORKDAY_ACC_GL_FILE_LOAD_PROC",
+      "target": "NCRNICSERPCSPPRC.NCR_COMMON_UTILITY_PKG"
+    },
+    {
+      "source": "NCRNICSERPCSPPRC.NATL_WORKDAY_ACC_GL_FILE_LOAD_PROC",
+      "target": "NCRNICSERPCSPPRC.NATL_WORKDAY_CLOUD_GL_MAIN"
+    },
+    {
+      "source": "NCRNICSERPCSPPRC.NATL_WORKDAY_PAY_GL_DATA_PKG",
+      "target": "NCRNICSERPCSPPRC.NATL_WORKDAY_GL_GROUPID_S"
+    },
+    {
+      "source": "NCRNICSERPCSPPRC.NATL_WORKDAY_PAY_GL_DATA_PKG",
+      "target": "NCRNICSERPCSPPRC.NATL_WORKDAY_CLOUD_GL_FILE_STATUS"
+    },
+    {
+      "source": "NCRNICSERPCSPPRC.NATL_WORKDAY_PAY_GL_DATA_PKG",
+      "target": "NCRNICSERPCSPPRC.NATL_WORKDAY_PAY_GL_DATA_PKG"
+    },
+    {
+      "source": "NCRNICSERPCSPPRC.NATL_WORKDAY_PAY_GL_DATA_PKG",
+      "target": "CMU.NCR_COMMON_MAPPING_UTILITY"
+    },
+    {
+      "source": "NCRNICSERPCSPPRC.NATL_WORKDAY_PAY_GL_DATA_PKG",
+      "target": "NCRNICSERPCSPPRC.NCR_CSV_PKG"
+    },
+    {
+      "source": "NCRNICSERPCSPPRC.NATL_WORKDAY_PAY_GL_DATA_PKG",
+      "target": "NCRNICSERPCSPPRC.NATL_WORKDAY_CLOUD_GL_DATA_ARCHIVE"
+    },
+    {
+      "source": "NCRNICSERPCSPPRC.NATL_WORKDAY_PAY_GL_DATA_PKG",
+      "target": "NCRNICSERPCSPPRC.NATL_WORKDAY_CLOUD_GL_MAIN"
+    },
+    {
+      "source": "NCRNICSERPCSPPRC.NATL_WORKDAY_PAY_GL_DATA_PKG",
+      "target": "NCRNICSERPCSPPRC.NCR_COMMON_UTILITY_PKG"
+    },
+    {
+      "source": "NCRNICSERPCSPPRC.NATL_WORKDAY_PAY_GL_FILE_LOAD_PROC",
+      "target": "NCRNICSERPCSPPRC.NATL_WORKDAY_CLOUD_GL_MAIN"
+    },
+    {
+      "source": "NCRNICSERPCSPPRC.NATL_WORKDAY_PAY_GL_FILE_LOAD_PROC",
+      "target": "NCRNICSERPCSPPRC.NATL_WORKDAY_CLOUD_GL_FILE_STATUS"
+    },
+    {
+      "source": "NCRNICSERPCSPPRC.NATL_WORKDAY_PAY_GL_FILE_LOAD_PROC",
+      "target": "NCRNICSERPCSPPRC.NCR_COMMON_UTILITY_PKG"
+    },
+    {
+      "source": "NCRNICSERPCSPPRC.NATL_WORKDAY_PAY_GL_FILE_LOAD_PROC",
+      "target": "NCRNICSERPCSPPRC.NATL_WORKDAY_PAY_GL_DATA_PKG"
+    }
+  ]
+}
+

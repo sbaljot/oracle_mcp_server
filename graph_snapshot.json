@@ -1,0 +1,155 @@
+{
+  "nodes": [
+    {
+      "node_id": "N01",
+      "kind": "start",
+      "label": "Start procedure NATL_WORKDAY_ACC_GL_FILE_LOAD_PROC",
+      "line": 30
+    },
+    {
+      "node_id": "N02",
+      "kind": "statement",
+      "label": "Insert initial status record with status 'I'",
+      "line": 36
+    },
+    {
+      "node_id": "N03",
+      "kind": "statement",
+      "label": "Insert data into NATL_WORKDAY_CLOUD_GL_MAIN from external table",
+      "line": 44
+    },
+    {
+      "node_id": "N04",
+      "kind": "exception",
+      "label": "Exception during insert into main table",
+      "line": 56
+    },
+    {
+      "node_id": "N05",
+      "kind": "statement",
+      "label": "Count rows with status 'I' and today's date and matching file name",
+      "line": 60
+    },
+    {
+      "node_id": "N06",
+      "kind": "decision",
+      "label": "If V_COUNT != 0",
+      "line": 64
+    },
+    {
+      "node_id": "N07",
+      "kind": "statement",
+      "label": "Archive the file using utl_file.fcopy",
+      "line": 66
+    },
+    {
+      "node_id": "N08",
+      "kind": "statement",
+      "label": "Call NATL_WORKDAY_PAY_GL_DATA_PKG.NATL_WORKDAY_PAY_GL_DATA_PRC",
+      "line": 74
+    },
+    {
+      "node_id": "N09",
+      "kind": "statement",
+      "label": "Update status to 'P' in file status table",
+      "line": 82
+    },
+    {
+      "node_id": "N10",
+      "kind": "statement",
+      "label": "Update status to 'E' in file status table",
+      "line": 88
+    },
+    {
+      "node_id": "N11",
+      "kind": "exception",
+      "label": "Outer exception caught",
+      "line": 95
+    },
+    {
+      "node_id": "N12",
+      "kind": "statement",
+      "label": "Send email with error details",
+      "line": 97
+    },
+    {
+      "node_id": "N13",
+      "kind": "end",
+      "label": "End procedure",
+      "line": 105
+    }
+  ],
+  "edges": [
+    {
+      "source": "N01",
+      "target": "N02",
+      "outcome": "start"
+    },
+    {
+      "source": "N02",
+      "target": "N03",
+      "outcome": "insert initial status done"
+    },
+    {
+      "source": "N03",
+      "target": "N04",
+      "outcome": "exception during insert"
+    },
+    {
+      "source": "N03",
+      "target": "N05",
+      "outcome": "insert success"
+    },
+    {
+      "source": "N04",
+      "target": "N05",
+      "outcome": "exception caught, continue"
+    },
+    {
+      "source": "N05",
+      "target": "N06",
+      "outcome": "count obtained"
+    },
+    {
+      "source": "N06",
+      "target": "N07",
+      "outcome": "V_COUNT != 0"
+    },
+    {
+      "source": "N06",
+      "target": "N10",
+      "outcome": "V_COUNT = 0"
+    },
+    {
+      "source": "N07",
+      "target": "N08",
+      "outcome": "file archived"
+    },
+    {
+      "source": "N08",
+      "target": "N09",
+      "outcome": "downstream proc called"
+    },
+    {
+      "source": "N09",
+      "target": "N13",
+      "outcome": "status updated to P"
+    },
+    {
+      "source": "N10",
+      "target": "N09",
+      "outcome": "status updated to E then P"
+    },
+    {
+      "source": "N11",
+      "target": "N12",
+      "outcome": "exception caught"
+    },
+    {
+      "source": "N12",
+      "target": "N13",
+      "outcome": "email sent"
+    }
+  ],
+  "source": "C:\\Users\\bb385001\\OneDrive - NCR ATLEOS\\Documents\\Office docs\\sample_files\\NATL_WORKDAY_ACC_GL_FILE_LOAD_PROC.sql"
+}
